@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="shortcut icon" type="image/x-icon" href="assets/bytelinelogo2.png" />
   <meta charset="UTF-8">
   <title>ByteLine – Home</title>
   <link rel="stylesheet" href="styles.css">
@@ -10,16 +9,16 @@
 
 
   <header>
-  <nav>
-    <a onclick="document.getElementById('hero').scrollIntoView()">Home</a>
-    <a href="about.html">About</a>
-    <a href="cart.html">Cart</a>
-  </nav>
-</header>
-</header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </header>
+
 
 <section class="hero" id="hero">
-  <img id="logo" src="assets/bytelinelogo2.jpg" alt="ByteLine Logo">
+  <img id="logo" src="assets/bytelinelogo2.png" alt="ByteLine Logo">
   <h2>Welcome to ByteLine Computer Store</h2>
   <p>Shop the latest tech gear all in one place.</p>
 </section>
@@ -27,13 +26,21 @@
 <section class="choices-section">
   <div class="choices-container">
     <h2>You can search all products</h2>
-    <button>Search Products</button>
+    <a href="search.html">
+      <button>Search Products</button>
+    </a>
     <h2>Or</h2>
     <h2>You can browse specific product types</h2>
     <div class="categories">
-      <button>Laptops</button>
-      <button>Peripherals</button>
-      <button>Accessories</button>
+      <a href="laptops.html">
+        <button>Laptops</button>
+      </a>
+      <a href="peripherals.html">
+        <button>Peripherals</button>
+      </a>
+      <a href="accessories.html">
+        <button>Accessories</button>
+      </a>
     </div>
   </div>
 </section>

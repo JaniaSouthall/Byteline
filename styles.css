@@ -26,9 +26,31 @@ body {
     text-align: center;
     width: 400px;
     height: 300px;
+    border: 1px solid black;
+    margin-left: 5px;
+  }
+  .login-row {
+    display: flex;
+    flex-direction: row;
   }
   .login-container h1 {
     color: #003366;
+  }
+  .about-section {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+  }
+  .about-container {
+    background-color: #f8f9fa;
+    color: #003366;
+    text-align: center;
+    width: 80%;
+    height: 80%;
+    margin-top: 40px;
   }
   .input-box input {
     width: 80%;
@@ -79,6 +101,33 @@ body {
     background-color: #0055aa;
     color: white;
     cursor: pointer;
+  }
+  .search-section {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+  }
+  .search-bar {
+    display: flex;
+    width: 100%;
+    background-color: #003366;
+    height: 100px;
+    color: white;
+    border: 1px solid black;
+    align-items: center;
+    padding-left: 20px;
+  }
+  .search-header {
+    background-color: #003366;
+    color: white;
+    width: 100%;
+    height: 50px;
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
   }
   .categories {
     display: flex;
