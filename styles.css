@@ -14,6 +14,45 @@ body {
     max-height: 80px;
     margin-bottom: 10px;
   }
+  .login-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    height: 100vh;
+  }
+  .login-container {
+    background: #f8f9fa;
+    text-align: center;
+    width: 400px;
+    height: 300px;
+  }
+  .login-container h1 {
+    color: #003366;
+  }
+  .input-box input {
+    width: 80%;
+    margin-bottom: 20px;
+    color: #003366;
+    border: 2px solid #003366;
+  }
+  .btn {
+    width: 40%;
+    background-color: white;
+    color: #003366;
+    border: 2px solid #003366;
+  }
+  .footer {
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    height: 5%;
+    bottom: 0px;
+    width: 100%;
+    color: white;
+    background-color: #003366;
+  }
   nav {
     margin-top: 10px;
   }
@@ -22,6 +61,23 @@ body {
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
+    cursor: pointer;
+  }
+  .choices-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .choices-container {
+    text-align: center;
+    color: #003366;
+  }
+  .choices-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0055aa;
+    color: white;
     cursor: pointer;
   }
   .categories {
@@ -87,20 +143,15 @@ body {
 .auth-options .login-btn {
     background-color: #0055aa;
     color: white;
-}
-
-.auth-options .login-btn:hover {
-    background-color: #003366;
+    border: 1px solid black;
 }
 
 .auth-options .signup-btn {
-    background-color: orange;
-    color: white;
+    background-color: #f4f4f4;
+    color: #0055aa;
+    border: 1px solid #0055aa;
 }
 
-.auth-options .signup-btn:hover {
-    background-color: #cc7a00;
-}
   .hero button {
     background: orange;
     color: white;

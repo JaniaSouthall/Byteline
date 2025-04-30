@@ -12,88 +12,40 @@
   <header>
   <nav>
     <a onclick="document.getElementById('hero').scrollIntoView()">Home</a>
-    <a onclick="document.getElementById('products').scrollIntoView()">Products</a>
+    <a href="about.html">About</a>
     <a href="cart.html">Cart</a>
-    <a href="login.html">Login</a>
-    <a onclick="promptAdminAccess()">Admin</a>
   </nav>
 </header>
 </header>
 
 <section class="hero" id="hero">
   <img id="logo" src="assets/bytelinelogo2.jpg" alt="ByteLine Logo">
-  <h2>Welcome to Computer Store</h2>
-  <p>Shop the latest tech gear and build your custom PC in minutes.</p>
-  <button style="background: #800080">SHOP NOW</button>
+  <h2>Welcome to ByteLine Computer Store</h2>
+  <p>Shop the latest tech gear all in one place.</p>
 </section>
 
-<div class="categories">
-  <button onclick="filterCategory('Laptops')">Laptops</button>
-  <button onclick="filterCategory('Peripherals')">Peripherals</button>
-  <button onclick="filterCategory('Accessories')">Accessories</button>
-  <button onclick="filterCategory('')">All</button>
+<section class="choices-section">
+  <div class="choices-container">
+    <h2>You can search all products</h2>
+    <button>Search Products</button>
+    <h2>Or</h2>
+    <h2>You can browse specific product types</h2>
+    <div class="categories">
+      <button>Laptops</button>
+      <button>Peripherals</button>
+      <button>Accessories</button>
+    </div>
+  </div>
+</section>
+
+
+<div class="footer">
+  &copy; 2025 ByteLine Project – Built by HU Students 💻
 </div>
 
-<section class="promo-section">
-  <div class="promo-card">
-    <h3>New Year Sale</h3>
-    <p>GET AN EXTRA 50% OFF</p>
-    <button style="background: #800080">Shop Now</button>
-  </div>
-  <div class="promo-card">
-    <h3>Birthday Sale</h3>
-    <p>30% DISCOUNT ON LAPTOPS</p>
-    <button style="background: #800080">View Collection</button>
-  </div>
-</section>
-
-<section id="products">
-  <h2>Hot Deals Today</h2>
-  <div id="productList"></div>
-</section>
-
-<section class="banner">
-  <h2>Build Your Own PC In Minutes</h2>
-  <p>Start from $20.99</p>
-  <button>SHOP NOW</button>
-</section>
-
-<footer>
-  &copy; 2025 ByteLine Project – Built by HU Students 💻
-</footer>
-
-<section id="checkout" style="padding: 40px 20px; text-align: center;">
-  <h2>Checkout</h2>
-  <p id="checkoutSummary">Your cart is empty.</p>
-  <button onclick="checkout()" style="background: #800080; color: white; padding: 12px 25px; border: none; border-radius: 5px; font-size: 1em; cursor: pointer;">Confirm Order</button>
-</section>
 
 <script>
   let allProducts = [];
-  const cart = [];
-
-  function renderCartCount() {
-    document.getElementById('cartCount').textContent = cart.length;
-  }
-
-  function addToCart(product) {
-    cart.push(product);
-    console.log("Cart:", cart);
-    renderCartCount();
-  }
-
-function toggleCart() {
-  const summary = cart.length
-    ? cart.map(p => `${p.name} - $${p.price}`).join('\n')
-    : "Cart is empty.";
-  alert("Cart Contents:\n" + summary);
-}
-
-
-  function promptAdminAccess() {
-    alert("Admin login will be shown in next update!");
-  }
-
   function renderProducts(products) {
     const list = document.getElementById('productList');
     list.innerHTML = '';
@@ -126,29 +78,9 @@ function toggleCart() {
       allProducts = products;
       renderProducts(products);
     });
-function checkout() {
-  if (cart.length === 0) {
-    document.getElementById('checkoutSummary').textContent = "Your cart is empty.";
-    alert("Please add items to your cart before checking out.");
-    return;
-  }
 
-  let total = 0;
-  const summary = cart.map(p => {
-    total += parseFloat(p.price);
-    return `${p.name} - $${p.price}`;
-  }).join('\n');
 
-  document.getElementById('checkoutSummary').textContent = `
-${summary}
 
-Total: $${total.toFixed(2)}`;
-  alert("Order confirmed! Total: $" + total.toFixed(2));
-  
-  cart.length = 0; // clear cart
-  renderCartCount();
-  renderProducts(allProducts); // 👈 this keeps products showing
-}
 
 </script>
 
