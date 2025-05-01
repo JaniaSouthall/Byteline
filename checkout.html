@@ -5,11 +5,34 @@
 </head>
 <body>
     <header>
-        <h1>checkout</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="cart.html">Cart</a>
+        </nav>
     </header>
     <main>
-
+        <section class="checkout-container">
+            <div class="checkout-header">
+                Checkout
+            </div>
+            <section class="checkout-section">
+                <div class="checkout-box">
+                    <!-- Put the last four digits from the users credit card here -->
+                    <p style="margin-left:10px;">Checking out with card ending in: ****</p>
+                    <p style="margin-left:10px;">Enter your address:</p>
+                    <input type="address" style="margin-left:10px;" placeholder="Address, city, state, zip code..." required>
+                    <!-- Put the total of the items they are buying here -->
+                    <p style="margin-left:10px;">Total: $****</p>
+                    <button style="margin-left:10px;">Confirm</button>
+                </div>
+            </section>
+        </section>
     </main>
+
+    <div class="footer">
+        &copy; 2025 ByteLine Project – Built by HU Students 💻
+    </div>
 
 </body>
 </html>
