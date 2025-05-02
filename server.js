@@ -15,10 +15,12 @@ app.get('/', (req, res) => {
 
 // ✅ Route handlers
 try {
-  app.use('/api/products', require('./routes/products'));
-  app.use('/api/users', require('./routes/users'));
-  app.use('/api/posts', require('./routes/posts'));
-  app.use('/api/comments', require('./routes/comments'));
+  app.use('/api/laptops', require('./routes/laptops'));
+  app.use('/api/peripherals', require('./routes/peripherals'));
+  app.use('/api/accessories', require('./routes/accessories'));
+  app.use('/api/search', require('./routes/search'));
+  app.use('/api/login', require('./routes/login'));
+  app.use('/api/cart', require('./routes/cart'));
 } catch (err) {
   console.error('Route error:', err.message);
 }

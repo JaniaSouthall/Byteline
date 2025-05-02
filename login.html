@@ -13,26 +13,22 @@
                 <div class="login-container">
                     <h1>User Login</h1>
                     <div class="input-box">
-                        <input type="text" placeholder="Username" required>
+                        <input id="user-email" type="text" placeholder="Email" required>
                     </div>
                     <div class="input-box">
-                        <input type="password" placeholder="Password" required>
+                        <input id="user-password" type="password" placeholder="Password" required>
                     </div>
-                    <a href="index.html">
-                        <button type="submit" class="btn">Login</button>
-                    </a>
+                    <button id="user-login-btn" class="btn">Login</button>
                 </div>
                 <div class="login-container">
                     <h1>Admin Login</h1>
                     <div class="input-box">
-                        <input type="text" placeholder="Username" required>
+                        <input id="admin-username" type="text" placeholder="Username" required>
                     </div>
                     <div class="input-box">
-                        <input type="password" placeholder="Password" required>
+                        <input id="admin-password" type="password" placeholder="Password" required>
                     </div>
-                    <a href="admin.html">
-                        <button type="submit" class="btn">Login</button>
-                    </a>
+                    <button id="admin-login-btn" class="btn">Login</button>
                 </div>
             </div>
         </section>
@@ -42,5 +38,55 @@
         &copy; 2025 ByteLine Project – Built by HU Students 💻
     </div>
 
+    <script>
+        async function loginUser() {
+            const email = document.getElementById('user-email').value;
+            const password = document.getElementById('user-password').value;
+
+            try {
+                const response = await fetch('http://localhost:5004/api/login/user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    window.location.href = 'index.html'; // Redirect to user homepage
+                } else {
+                    alert(result.error);
+                }
+            } catch (err) {
+                console.error('Login failed:', err);
+            }
+        }
+
+        async function loginAdmin() {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+
+            try {
+                const response = await fetch('http://localhost:5004/api/login/admin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    window.location.href = 'admin.html'; // Redirect to admin homepage
+                } else {
+                    alert(result.error);
+                }
+            } catch (err) {
+                console.error('Login failed:', err);
+            }
+        }
+
+        document.getElementById('user-login-btn').addEventListener('click', loginUser);
+        document.getElementById('admin-login-btn').addEventListener('click', loginAdmin);
+    </script>
 </body>
 </html>

@@ -9,7 +9,7 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="cart.html">Cart</a>
-          </nav>
+        </nav>
     </header>
     <main>
         <section class="productview-container">
@@ -18,15 +18,16 @@
             </div>
             <section class="productview-section">
                 <div class="productview-box">
-                    <h2 style="margin-left:10px;">pname</h2>
-                    <div class="product-img-placeholder" style="margin-left:10px;">
-                        Image goes here, adjust image height if need be
+                    <h2 id="product-name" style="margin-left:10px;"></h2>
+                    <div class="product-img-placeholder" id="product-image" style="margin-left:10px;">
+                        <!-- Image will be inserted here -->
                     </div>
-                    <p style="margin-left:10px;">price</p>
-                    <p style="margin-left:10px;">brand</p>
-                    <p style="margin-left:10px;">description</p>
-                    <p style="margin-left:10px;">stock</p>
-                    <p style="margin-left:10px;">review</p>
+                    <p id="product-price" style="margin-left:10px;"></p>
+                    <p id="product-brand" style="margin-left:10px;"></p>
+                    <p id="product-description" style="margin-left:10px;"></p>
+                    <p id="product-stock" style="margin-left:10px;"></p>
+                    <p id="product-serial" style="margin-left:10px;"></p>
+                    <button id="add-to-cart-btn" style="margin-left:10px;">Add to Cart</button>
                 </div>
             </section>    
         </section>
@@ -35,6 +36,44 @@
     <div class="footer">
         &copy; 2025 ByteLine Project – Built by HU Students 💻
     </div>
+
+    <script>
+        function populateProductDetails() {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById('product-name').textContent = params.get('name');
+            document.getElementById('product-image').innerHTML = `<img src="${params.get('image')}" alt="${params.get('name')}" style="max-width: 100%; height: auto;">`;
+            document.getElementById('product-price').textContent = `Price: $${parseFloat(params.get('price')).toFixed(2)}`;
+            document.getElementById('product-brand').textContent = `Brand: ${params.get('brand')}`;
+            document.getElementById('product-description').textContent = `Description: ${params.get('description')}`;
+            document.getElementById('product-stock').textContent = `Stock: ${params.get('stock')}`;
+            document.getElementById('product-serial').textContent = `Serial: ${params.get('serial')}`;
+        }
+
+        function addToCart() {
+        const params = new URLSearchParams(window.location.search);
+        const cartItem = {
+            email: 'jania.southall@my.hamptonu.edu', // Replace with the logged-in user's email
+            serial: params.get('serial')
+        };
+
+        fetch('http://localhost:5004/api/cart/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cartItem)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(err => {
+            console.error('Failed to add item to cart:', err);
+        });
+    }
+
+        document.getElementById('add-to-cart-btn').addEventListener('click', addToCart);
+
+        populateProductDetails();
+    </script>
 
 </body>
 </html>

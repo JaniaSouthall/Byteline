@@ -17,14 +17,52 @@
                 Search all of our products here!
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Search.." style="width:95%;">
+                <input id="search-input" type="text" placeholder="Search.." style="width:95%;">
+                <button id="search-button">Search</button>
             </div>
-            Put the results here
         </section>
+        <section id="product-container" class="product-grid"></section>
     </main>
     <div class="footer">
         &copy; 2025 ByteLine Project – Built by HU Students 💻
     </div>
+
+    <script>
+        async function searchProducts() {
+            const query = document.getElementById('search-input').value;
+            if (!query) return; // Do nothing if the search box is empty
+
+            try {
+                const response = await fetch(`http://localhost:5004/api/search?query=${encodeURIComponent(query)}`);
+                const products = await response.json();
+
+                const container = document.getElementById('product-container');
+                container.innerHTML = ''; // Clear previous results
+
+                if (products.length === 0) {
+                    container.innerHTML = '<p>No products found.</p>';
+                    return;
+                }
+
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>$${parseFloat(product.price).toFixed(2)}</p>
+                        <p>Category: ${product.category}</p>
+                        <button>Add to Cart</button>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Failed to fetch products:', err);
+            }
+        }
+
+        document.getElementById('search-button').addEventListener('click', searchProducts);
+    </script>
 
 </body>
 </html>

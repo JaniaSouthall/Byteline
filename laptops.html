@@ -9,20 +9,61 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="cart.html">Cart</a>
-          </nav>
+        </nav>
     </header>
     <main>
         <section class="search-section">
             <div class="search-header">
                 Choose from all of our laptops!
             </div>
-            Put all laptops here
         </section>
+
+        <section id="product-container" class="product-grid"></section>
     </main>
 
     <div class="footer">
         &copy; 2025 ByteLine Project – Built by HU Students 💻
     </div>
+
+    <script>
+        async function fetchLaptops() {
+            try {
+                const response = await fetch('http://localhost:5004/api/laptops');
+                const laptops = await response.json();
+
+                const container = document.getElementById('product-container');
+
+                laptops.forEach(laptop => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${laptop.image}" alt="${laptop.name}">
+                        <h2>${laptop.name}</h2>
+                        <p>$${parseFloat(laptop.price).toFixed(2)}</p>
+                        <button onclick="viewProduct('${laptop.name}', '${laptop.image}', '${laptop.price}', '${laptop.brand}', '${laptop.description}', '${laptop.stock}', '${laptop.serial}')">View Product</button>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Failed to fetch laptops:', err);
+            }
+        }
+
+        function viewProduct(name, image, price, brand, description, stock, serial) {
+            const params = new URLSearchParams({
+                name,
+                image,
+                price,
+                brand,
+                description,
+                stock,
+                serial
+            });
+            window.location.href = `productview.html?${params.toString()}`;
+        }
+
+        fetchLaptops();
+    </script>
 
 </body>
 </html>
