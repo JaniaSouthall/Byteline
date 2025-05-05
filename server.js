@@ -22,6 +22,7 @@ try {
   app.use('/api/login', require('./routes/login'));
   app.use('/api/cart', require('./routes/cart'));
   app.use('/api/signup', require('./routes/signup'));
+  app.use('/api/checkout', require('./routes/checkout'));
 } catch (err) {
   console.error('Route error:', err.message);
 }

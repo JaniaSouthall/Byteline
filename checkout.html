@@ -18,13 +18,12 @@
             </div>
             <section class="checkout-section">
                 <div class="checkout-box">
-                    <!-- Put the last four digits from the users credit card here -->
-                    <p style="margin-left:10px;">Checking out with card ending in: ****</p>
+                    <p style="margin-left:10px;">Enter your credit card number:</p>
+                    <input id="credit-card" type="text" style="margin-left:10px;" placeholder="CC#" required>
                     <p style="margin-left:10px;">Enter your address:</p>
-                    <input type="address" style="margin-left:10px;" placeholder="Address, city, state, zip code..." required>
-                    <!-- Put the total of the items they are buying here -->
-                    <p style="margin-left:10px;">Total: $****</p>
-                    <button style="margin-left:10px;">Confirm</button>
+                    <input id="address" type="text" style="margin-left:10px;" placeholder="Address, city, state, zip code..." required>
+                    <p id="total-cost" style="margin-left:10px;">Total: $****</p>
+                    <button id="confirm-btn" style="margin-left:10px;">Confirm</button>
                 </div>
             </section>
         </section>
@@ -34,5 +33,57 @@
         &copy; 2025 ByteLine Project – Built by HU Students 💻
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const email = sessionStorage.getItem('userEmail');
+            if (!email) {
+                alert('You must be logged in to checkout.');
+                window.location.href = 'login.html';
+                return;
+            }
+    
+            let total = 0; // Define total in a higher scope
+    
+            // Fetch the cart total
+            fetch(`http://localhost:5004/api/cart/${email}`)
+                .then(response => response.json())
+                .then(cart => {
+                    total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0); // Update total
+                    document.getElementById('total-cost').textContent = `Total: $${total.toFixed(2)}`;
+                })
+                .catch(err => {
+                    console.error('Failed to load cart total:', err);
+                });
+    
+            document.getElementById('confirm-btn').addEventListener('click', async () => {
+                const address = document.getElementById('address').value.trim();
+                const creditCardNum = document.getElementById('credit-card').value.trim();
+    
+                if (!address || !creditCardNum) {
+                    alert('Please fill out all fields.');
+                    return;
+                }
+    
+                try {
+                    const response = await fetch('http://localhost:5004/api/checkout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, address, creditCardNum, total }) // Use total here
+                    });
+    
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert(result.message);
+                        window.location.href = 'index.html'; // Redirect to home page
+                    } else {
+                        alert(result.error);
+                    }
+                } catch (err) {
+                    console.error('Error during checkout:', err);
+                    alert('Failed to complete checkout. Please try again later.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

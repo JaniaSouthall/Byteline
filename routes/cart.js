@@ -8,16 +8,19 @@ router.post('/add', async (req, res) => {
 
     try {
         // Directly update the cart since it always exists
-        const result = await pool.query('SELECT serial FROM cart WHERE email = $1', [email]);
+        console.log('Adding to cart:', { email, serial }); // Debugging log
+        const result = await pool.query('SELECT serial FROM carts WHERE email = $1', [email]);
+        console.log('Cart query result:', result.rows); // Debugging log
 
         const existingSerials = result.rows[0].serial;
         if (!existingSerials.includes(serial)) {
             existingSerials.push(serial);
-            await pool.query('UPDATE cart SET serial = $1 WHERE email = $2', [existingSerials, email]);
+            await pool.query('UPDATE carts SET serial = $1 WHERE email = $2', [existingSerials, email]);
         }
 
         res.json({ message: 'Item added to cart successfully' });
     } catch (err) {
+        console.error('Error adding to cart:', err); // Debugging log
         res.status(500).json({ error: err.message });
     }
 });
@@ -27,7 +30,7 @@ router.get('/:email', async (req, res) => {
     const { email } = req.params;
 
     try {
-        const result = await pool.query('SELECT serial FROM cart WHERE email = $1', [email]);
+        const result = await pool.query('SELECT serial FROM carts WHERE email = $1', [email]);
 
         const serials = result.rows[0].serial;
 
@@ -49,6 +52,7 @@ router.get('/:email', async (req, res) => {
 
         res.json(products);
     } catch (err) {
+        console.error('Error fetching cart items:', err); // Debugging log
         res.status(500).json({ error: err.message });
     }
 });
@@ -58,14 +62,15 @@ router.delete('/remove', async (req, res) => {
     const { email, serial } = req.body;
 
     try {
-        const result = await pool.query('SELECT serial FROM cart WHERE email = $1', [email]);
+        const result = await pool.query('SELECT serial FROM carts WHERE email = $1', [email]);
 
         const updatedSerials = result.rows[0].serial.filter(item => item !== serial);
 
-        await pool.query('UPDATE cart SET serial = $1 WHERE email = $2', [updatedSerials, email]);
+        await pool.query('UPDATE carts SET serial = $1 WHERE email = $2', [updatedSerials, email]);
 
         res.json({ message: 'Item removed from cart successfully' });
     } catch (err) {
+        console.error('Error removing item from cart:', err); // Debugging log
         res.status(500).json({ error: err.message });
     }
 });

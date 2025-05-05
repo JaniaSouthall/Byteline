@@ -38,6 +38,13 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const email = sessionStorage.getItem('userEmail');
+            if (!email) {
+                alert('You must be logged in to view this page.');
+                window.location.href = 'login.html';
+            }
+        });
         function populateProductDetails() {
             const params = new URLSearchParams(window.location.search);
             document.getElementById('product-name').textContent = params.get('name');
@@ -50,25 +57,35 @@
         }
 
         function addToCart() {
-        const params = new URLSearchParams(window.location.search);
-        const cartItem = {
-            email: 'jania.southall@my.hamptonu.edu', // Replace with the logged-in user's email
-            serial: params.get('serial')
-        };
+            const params = new URLSearchParams(window.location.search);
 
-        fetch('http://localhost:5004/api/cart/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(cartItem)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-        })
-        .catch(err => {
-            console.error('Failed to add item to cart:', err);
-        });
-    }
+            // Retrieve the user's email from session storage
+             const email = sessionStorage.getItem('userEmail');
+            if (!email) {
+                 alert('You must be logged in to add items to your cart.');
+                 return;
+             }
+
+            const cartItem = {
+                email: email,
+                serial: params.get('serial')
+            };
+
+            console.log('Cart item being sent:', cartItem); // Debugging log
+
+            fetch('http://localhost:5004/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cartItem)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(err => {
+                console.error('Failed to add item to cart:', err);
+            });
+        }
 
         document.getElementById('add-to-cart-btn').addEventListener('click', addToCart);
 

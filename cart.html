@@ -33,7 +33,12 @@
 
     <script>
       function loadCart() {
-          const email = 'user@example.com'; // Replace with the logged-in user's email
+        const email = sessionStorage.getItem('userEmail');
+        if (!email) {
+            alert('You must be logged in to view your cart.');
+            window.location.href = 'login.html';
+            return;
+        }
   
           fetch(`http://localhost:5004/api/cart/${email}`)
               .then(response => response.json())
@@ -71,7 +76,12 @@
       }
   
       function removeFromCart(serial) {
-          const email = 'jania.southall@my.hamptonu.edu'; // Replace with the logged-in user's email
+        const email = sessionStorage.getItem('userEmail');
+        if (!email) {
+            alert('You must be logged in to view your cart.');
+            window.location.href = 'login.html';
+            return;
+        }
   
           fetch('http://localhost:5004/api/cart/remove', {
               method: 'DELETE',
