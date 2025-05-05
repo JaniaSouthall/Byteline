@@ -21,6 +21,7 @@ try {
   app.use('/api/search', require('./routes/search'));
   app.use('/api/login', require('./routes/login'));
   app.use('/api/cart', require('./routes/cart'));
+  app.use('/api/signup', require('./routes/signup'));
 } catch (err) {
   console.error('Route error:', err.message);
 }

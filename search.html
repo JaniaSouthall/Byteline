@@ -52,13 +52,26 @@
                         <h2>${product.name}</h2>
                         <p>$${parseFloat(product.price).toFixed(2)}</p>
                         <p>Category: ${product.category}</p>
-                        <button>Add to Cart</button>
+                        <button onclick="viewProduct('${product.name}', '${product.image}', '${product.price}', '${product.brand}', '${product.description}', '${product.stock}', '${product.serial}')">View Product</button>
                     `;
                     container.appendChild(card);
                 });
             } catch (err) {
                 console.error('Failed to fetch products:', err);
             }
+        }
+
+        function viewProduct(name, image, price, brand, description, stock, serial) {
+            const params = new URLSearchParams({
+                name,
+                image,
+                price,
+                brand,
+                description,
+                stock,
+                serial
+            });
+            window.location.href = `productview.html?${params.toString()}`;
         }
 
         document.getElementById('search-button').addEventListener('click', searchProducts);
