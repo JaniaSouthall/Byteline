@@ -1,9 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const app = express();
+const connectDB = require('./config/dbMongo');
 
+const app = express();
 const PORT = 5004;
+
+connectDB();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -23,6 +26,7 @@ try {
   app.use('/api/cart', require('./routes/cart'));
   app.use('/api/signup', require('./routes/signup'));
   app.use('/api/checkout', require('./routes/checkout'));
+  app.use('/api/reviews', require('./routes/reviews'));
 } catch (err) {
   console.error('Route error:', err.message);
 }

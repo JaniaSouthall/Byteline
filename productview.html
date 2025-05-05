@@ -28,14 +28,26 @@
                     <p id="product-stock" style="margin-left:10px;"></p>
                     <p id="product-serial" style="margin-left:10px;"></p>
                     <button id="add-to-cart-btn" style="margin-left:10px;">Add to Cart</button>
+
+                    <!-- Reviews Section -->
+                    <div class="reviews-container" style="margin-top: 20px;">
+                        <h3 style="margin-left:10px;">Reviews</h3>
+                        <section id="reviews-container" style="margin-left:10px;">
+                            <!-- Reviews will be dynamically loaded here -->
+                        </section>
+                        <div style="margin-left:10px; margin-top: 20px;">
+                            <h3>Submit a Review</h3>
+                            <label for="review-rating">Rating (1-5):</label>
+                            <input id="review-rating" type="number" min="1" max="5" required>
+                            <label for="review-comment">Comment:</label>
+                            <textarea id="review-comment" required></textarea>
+                            <button id="submit-review-btn">Submit Review</button>
+                        </div>
+                    </div>
                 </div>
-            </section>    
+            </section>
         </section>
     </main>
-
-    <div class="footer">
-        &copy; 2025 ByteLine Project – Built by HU Students 💻
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -45,6 +57,7 @@
                 window.location.href = 'login.html';
             }
         });
+
         function populateProductDetails() {
             const params = new URLSearchParams(window.location.search);
             document.getElementById('product-name').textContent = params.get('name');
@@ -60,11 +73,11 @@
             const params = new URLSearchParams(window.location.search);
 
             // Retrieve the user's email from session storage
-             const email = sessionStorage.getItem('userEmail');
+            const email = sessionStorage.getItem('userEmail');
             if (!email) {
-                 alert('You must be logged in to add items to your cart.');
-                 return;
-             }
+                alert('You must be logged in to add items to your cart.');
+                return;
+            }
 
             const cartItem = {
                 email: email,
@@ -90,7 +103,75 @@
         document.getElementById('add-to-cart-btn').addEventListener('click', addToCart);
 
         populateProductDetails();
-    </script>
 
+        // Load and Submit Reviews
+        document.addEventListener('DOMContentLoaded', () => {
+            const productId = new URLSearchParams(window.location.search).get('serial'); // Use serial as productId
+            const email = sessionStorage.getItem('userEmail');
+    
+            if (!email) {
+                alert('You must be logged in to view this page.');
+                window.location.href = 'login.html';
+                return;
+            }
+    
+            // Load reviews for the product
+            fetch(`http://localhost:5004/api/reviews/${productId}`)
+                .then(response => response.json())
+                .then(reviews => {
+                    const reviewsContainer = document.getElementById('reviews-container');
+                    reviewsContainer.innerHTML = '';
+    
+                    if (reviews.length === 0) {
+                        reviewsContainer.innerHTML = '<p>No reviews yet. Be the first to review this product!</p>';
+                        return;
+                    }
+    
+                    reviews.forEach(review => {
+                        const reviewElement = document.createElement('div');
+                        reviewElement.className = 'review';
+                        reviewElement.innerHTML = `
+                            <p><strong>${review.userEmail}</strong> (${new Date(review.date).toLocaleDateString()}):</p>
+                            <p>Rating: ${review.rating}/5</p>
+                            <p>${review.comment}</p>
+                        `;
+                        reviewsContainer.appendChild(reviewElement);
+                    });
+                })
+                .catch(err => {
+                    console.error('Failed to load reviews:', err);
+                });
+    
+            // Submit a new review
+            document.getElementById('submit-review-btn').addEventListener('click', async () => {
+                const rating = document.getElementById('review-rating').value;
+                const comment = document.getElementById('review-comment').value;
+    
+                if (!rating || !comment) {
+                    alert('Please fill out all fields.');
+                    return;
+                }
+    
+                try {
+                    const response = await fetch('http://localhost:5004/api/reviews', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ productId, userEmail: email, rating, comment })
+                    });
+    
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert(result.message);
+                        window.location.reload(); // Reload the page to show the new review
+                    } else {
+                        alert(result.error);
+                    }
+                } catch (err) {
+                    console.error('Error submitting review:', err);
+                    alert('Failed to submit review. Please try again later.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
