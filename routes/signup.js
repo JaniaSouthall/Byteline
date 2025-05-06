@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/dbPostgresql');
+const bcrypt = require('bcrypt');
 
 // User Signup
 router.post('/', async (req, res) => {
@@ -13,10 +14,14 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Email is already registered' });
         }
 
+        // Hash the password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         // Insert the new user into the users table
         await pool.query(
             'INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',
-            [name, email, password]
+            [name, email, hashedPassword]
         );
 
         // Create an empty cart for the user

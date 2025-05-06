@@ -2,17 +2,136 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="styles.css">
+    
 </head>
 <body>
     <header>
         <h1>Admin</h1>
     </header>
     <main>
+        <section class="admin-container">
+            <div class="admin-header">
+                Stock Information
+            </div>
+            <section class="admin-section">
+                <div class="admin-box" id="stock-items">
+                    <!-- Stock items will be dynamically inserted here -->
+                </div>
+            </section>
+        </section>
 
+        <section class="add-item-container">
+            <h2>Add New Item</h2>
+            <form id="add-item-form">
+                <div class="form-row-container">
+                    <div class="form-row">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="price">Price:</label>
+                        <input type="number" id="price" name="price" step="0.01" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="brand">Brand:</label>
+                        <input type="text" id="brand" name="brand" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label for="stock">Stock:</label>
+                        <input type="number" id="stock" name="stock" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="image">Image URL:</label>
+                        <input type="text" id="image" name="image" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="type">Product Type:</label>
+                        <select id="type" name="type" required>
+                            <option value="accessory">Accessory</option>
+                            <option value="peripheral">Peripheral</option>
+                            <option value="laptop">Laptop</option>
+                        </select>
+                    </div>
+                    <button type="submit">Add Item</button>
+                </div>
+            </form>
+        </section>
     </main>
-    <div class="footer">
-        &copy; 2025 ByteLine Project – Built by HU Students 💻
-    </div>
 
+    <script>
+        async function loadStock() {
+            try {
+                const response = await fetch('http://localhost:5004/api/admin');
+                const stockData = await response.json();
+                const stockItemsContainer = document.getElementById('stock-items');
+
+                // Clear the container before appending new items
+                stockItemsContainer.innerHTML = '';
+
+                if (stockData.length === 0) {
+                    stockItemsContainer.innerHTML = '<p>No stock information available.</p>';
+                    return;
+                }
+
+                stockData.forEach(item => {
+                    const stockItem = document.createElement('section');
+                    stockItem.className = 'admin-row';
+                    stockItem.innerHTML = `
+                        <div class="admin-serial">${item.serial}</div>
+                        <div class="admin-name">${item.name}</div>
+                        <div class="admin-brand">${item.brand}</div>
+                        <div class="admin-price">$${parseFloat(item.price).toFixed(2)}</div>
+                        <div class="admin-stock">${item.stock}</div>
+                    `;
+                    stockItemsContainer.appendChild(stockItem);
+                });
+            } catch (error) {
+                console.error('Error loading stock information:', error);
+                const stockItemsContainer = document.getElementById('stock-items');
+                stockItemsContainer.innerHTML = '<p>Failed to load stock information.</p>';
+            }
+        }
+
+        async function addItem(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const brand = document.getElementById('brand').value;
+            const description = document.getElementById('description').value;
+            const stock = parseInt(document.getElementById('stock').value);
+            const image = document.getElementById('image').value;
+            const type = document.getElementById('type').value;
+
+            try {
+                const response = await fetch('http://localhost:5004/api/admin/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, price, brand, description, stock, image, type })
+                });
+
+                if (response.ok) {
+                    alert('Item added successfully!');
+                    document.getElementById('add-item-form').reset(); // Clear all fields
+                    loadStock(); // Reload stock information
+                } else {
+                    const error = await response.json();
+                    alert(`Failed to add item: ${error.message}`);
+                }
+            } catch (error) {
+                console.error('Error adding item:', error);
+                alert('Failed to add item.');
+            }
+        }
+
+        document.getElementById('add-item-form').addEventListener('submit', addItem);
+
+        // Load stock information when the page loads
+        loadStock();
+    </script>
 </body>
 </html>

@@ -82,21 +82,27 @@
             window.location.href = 'login.html';
             return;
         }
-  
-          fetch('http://localhost:5004/api/cart/remove', {
-              method: 'DELETE',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, serial: serial })
-          })
-          .then(response => response.json())
-          .then(data => {
-              alert(data.message);
-              loadCart(); // Reload the cart
-          })
-          .catch(err => {
-              console.error('Failed to remove item from cart:', err);
-          });
-      }
+
+        fetch('http://localhost:5004/api/cart/remove', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, serial: serial })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+
+            // Clear the cart container before reloading
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            // Reload the cart
+            loadCart();
+        })
+        .catch(err => {
+            console.error('Failed to remove item from cart:', err);
+        });
+    }
   
       loadCart();
   </script>

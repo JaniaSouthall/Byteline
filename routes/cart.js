@@ -8,9 +8,9 @@ router.post('/add', async (req, res) => {
 
     try {
         // Directly update the cart since it always exists
-        console.log('Adding to cart:', { email, serial }); // Debugging log
+        console.log('Adding to cart:', { email, serial }); 
         const result = await pool.query('SELECT serial FROM carts WHERE email = $1', [email]);
-        console.log('Cart query result:', result.rows); // Debugging log
+        console.log('Cart query result:', result.rows); 
 
         const existingSerials = result.rows[0].serial;
         if (!existingSerials.includes(serial)) {
@@ -20,7 +20,7 @@ router.post('/add', async (req, res) => {
 
         res.json({ message: 'Item added to cart successfully' });
     } catch (err) {
-        console.error('Error adding to cart:', err); // Debugging log
+        console.error('Error adding to cart:', err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -34,7 +34,7 @@ router.get('/:email', async (req, res) => {
 
         const serials = result.rows[0].serial;
 
-        // Fetch product details for each serial
+        
         const products = [];
         for (const serial of serials) {
             const productResult = await pool.query(

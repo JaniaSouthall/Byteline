@@ -1,15 +1,15 @@
 const { Pool } = require('pg');
  
  const pool = new Pool({
-   user: 'postgres',            // ← your PostgreSQL username
+   user: 'postgres',            
    host: 'localhost',
-   database: 'Byteline',       // ← make sure this database exists
-   password: 'Bdjeb2168!',// ← replace with your actual password
+   database: 'Byteline',       
+   password: 'Byteline123',
    port: 5432
  });
  
  pool.on('connect', () => {
-   console.log('✅ Connected to PostgreSQL');
+   console.log('Connected to PostgreSQL');
  });
 
  pool.query('SELECT NOW()', (err, res) => {

@@ -42,7 +42,7 @@
                 return;
             }
     
-            let total = 0; // Define total in a higher scope
+            let total = 0; 
     
             // Fetch the cart total
             fetch(`http://localhost:5004/api/cart/${email}`)
@@ -68,13 +68,13 @@
                     const response = await fetch('http://localhost:5004/api/checkout', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, address, creditCardNum, total }) // Use total here
+                        body: JSON.stringify({ email, address, creditCardNum, total }) 
                     });
     
                     const result = await response.json();
                     if (response.ok) {
                         alert(result.message);
-                        window.location.href = 'index.html'; // Redirect to home page
+                        window.location.href = 'index.html'; 
                     } else {
                         alert(result.error);
                     }

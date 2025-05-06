@@ -74,6 +74,109 @@ body {
     height: 80%;
     margin-top: 40px;
   }
+  .form-row-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .form-row {
+      flex: 1 1 calc(33.33% - 10px); 
+      display: flex;
+      flex-direction: column;
+  }
+
+  .form-row label {
+      margin-bottom: 5px;
+  }
+
+  .form-row input, .form-row textarea, .form-row select {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+  }
+
+  .form-row-container button {
+      flex: 1 1 100%; 
+      margin-top: 10px;
+  }
+  .admin-section {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    justify-content: center;
+  }
+  .admin-container {
+    background-color: #f8f9fa;
+    color: #003366;
+    width: 80%;
+    height: 80%;
+    margin-top: 40px;
+    padding-left: 10px;
+  }
+  .admin-table {
+    display: flex;
+    flex-direction: row;
+    background-color: #f8f9fa;
+    color: #003366;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+  }
+  .admin-row {
+    display: flex;
+    flex-direction: row;
+    height: 5%;
+    width: 100%;
+    background-color: lightgray;
+  }
+  .admin-serial {
+    display: flex;
+    background-color: lightgray;
+    height: 100%;
+    width: 12%;
+    justify-content: center;
+    align-items: center;
+  }
+  .admin-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    height: 100%;
+    width: 53%;
+  }
+  .admin-price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    height: 100%;
+    width: 15%;
+  }
+  .admin-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    height: 100%;
+    width: 10%;
+  }
+  .admin-box {
+    width: 100%;
+    background-color: lightgray;
+    padding: 10px;
+  }
+  .admin-stock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    height: 100%;
+    width: 10%;
+  }
   .input-box input {
     width: 80%;
     margin-bottom: 20px;
@@ -149,18 +252,21 @@ body {
   }
   .cart-box {
     display: flex;
+    flex-direction: column;
     background-color: lightgray;
     height: 90%;
     width: 90%;
     padding-top: 1%;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
   }
   .cart-item {
     display: flex;
     flex-direction: row;
-    height: 20%;
+    height: 10%;
     width: 90%;
     background-color: lightgray;
+    margin-bottom: 10px;
   }
   .cart-image {
     display: flex;
@@ -349,8 +455,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
-    background-color: #f4f4f4; /* Optional background color */
+    height: 100vh; 
+    background-color: #f4f4f4; 
 }
 
 .auth-box {

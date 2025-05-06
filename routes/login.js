@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/dbPostgresql');
+const bcrypt = require('bcrypt');
 
 // User Login
 router.post('/user', async (req, res) => {
@@ -13,7 +14,10 @@ router.post('/user', async (req, res) => {
         }
 
         const user = result.rows[0];
-        if (user.password !== password) { // Compare plain text passwords
+
+        // Compare the entered password with the hashed password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
@@ -34,7 +38,9 @@ router.post('/admin', async (req, res) => {
         }
 
         const admin = result.rows[0];
-        if (admin.password !== password) { // Compare plain text passwords
+
+        // Compare the entered password with the plain text password
+        if (password !== admin.password) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 

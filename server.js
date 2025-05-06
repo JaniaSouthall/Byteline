@@ -11,12 +11,12 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ Root test route
+// Root test route
 app.get('/', (req, res) => {
   res.send('API is live!');
 });
 
-// ✅ Route handlers
+// Route handlers
 try {
   app.use('/api/laptops', require('./routes/laptops'));
   app.use('/api/peripherals', require('./routes/peripherals'));
@@ -27,14 +27,15 @@ try {
   app.use('/api/signup', require('./routes/signup'));
   app.use('/api/checkout', require('./routes/checkout'));
   app.use('/api/reviews', require('./routes/reviews'));
+  app.use('/api/admin', require('./routes/admin'));
 } catch (err) {
   console.error('Route error:', err.message);
 }
 
 app.listen(PORT, (err) => {
   if (err) {
-    console.error('❌ Server failed to start:', err.message);
+    console.error('Server failed to start:', err.message);
   } else {
-    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   }
 });
