@@ -1,11 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/dbPostgresql');
+const crypto = require('crypto');
+
+// Encryption setup
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'my32characterlongencryptionkey!!';
+const IV_LENGTH = 16;
+
+function encrypt(text) {
+    const iv = crypto.randomBytes(IV_LENGTH);
+    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return iv.toString('hex') + ':' + encrypted.toString('hex');
+}
 
 router.post('/', async (req, res) => {
     const { email, address, creditCardNum, total } = req.body;
 
     try {
+        // Encrypt the credit card number
+        const encryptedCreditCardNum = encrypt(creditCardNum);
+
         // Fetch the user's cart items
         const cartResult = await pool.query('SELECT serial FROM carts WHERE email = $1', [email]);
         const items = cartResult.rows[0]?.serial || [];
@@ -19,10 +35,10 @@ router.post('/', async (req, res) => {
         const orderID = parseInt(orderCountResult.rows[0].count) + 101;
 
         // Insert the order into the orders table
-        const date = new Date().toISOString(); 
+        const date = new Date().toISOString();
         await pool.query(
             'INSERT INTO orders (orderID, address, creditCardNum, items, total, date) VALUES ($1, $2, $3, $4, $5, $6)',
-            [orderID, address, creditCardNum, items, total, date]
+            [orderID, address, encryptedCreditCardNum, items, total, date]
         );
 
         // Update the user's order history
@@ -33,7 +49,6 @@ router.post('/', async (req, res) => {
 
         // Decrement the stock amount for each item in the cart
         for (const serial of items) {
-            // Check which table the product belongs to and decrement stock
             const tables = ['accessories', 'peripherals', 'laptops'];
             let stockUpdated = false;
 
@@ -45,7 +60,7 @@ router.post('/', async (req, res) => {
 
                 if (result.rowCount > 0) {
                     stockUpdated = true;
-                    break; // Exit the loop once the stock is updated
+                    break;
                 }
             }
 
