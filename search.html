@@ -51,7 +51,7 @@
                         <img src="${product.image}" alt="${product.name}">
                         <h2>${product.name}</h2>
                         <p>$${parseFloat(product.price).toFixed(2)}</p>
-                        <p>Category: ${product.category}</p>
+                        
                         <button onclick="viewProduct('${product.name}', '${product.image}', '${product.price}', '${product.brand}', '${product.description}', '${product.stock}', '${product.serial}')">View Product</button>
                     `;
                     container.appendChild(card);
