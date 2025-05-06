@@ -28,6 +28,7 @@ try {
   app.use('/api/checkout', require('./routes/checkout'));
   app.use('/api/reviews', require('./routes/reviews'));
   app.use('/api/admin', require('./routes/admin'));
+  app.use('/api/admins', require('./routes/admins'));
 } catch (err) {
   console.error('Route error:', err.message);
 }
